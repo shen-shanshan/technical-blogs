@@ -77,8 +77,10 @@ $$
 其中 \\(\mathbf{U}\\) 是 \\(m\\) 阶正交矩阵，\\(\mathbf{V}\\) 是 \\(n\\) 阶正交矩阵，\\(\mathbf{Σ}\\) 是由降序排列的对角线元素组成的 \\(m \times n\\) 矩形对角矩阵。
 
 $$
-\mathbf{Σ} = diag(\sigma\_{1}, \sigma\_{2}, ..., \sigma\_{p}) \\\
-\sigma\_{1} \geq \sigma\_{2} \geq ... \geq \sigma\_{p} \geq 0
+\begin{gathered}
+\mathbf{Σ} = diag(\sigma_{1}, \sigma_{2}, ..., \sigma_{p}) \\
+\sigma_{1} \geq \sigma_{2} \geq ... \geq \sigma_{p} \geq 0
+\end{gathered}
 $$
 
 \\(\mathbf{U}\mathbf{Σ}\mathbf{V}^{T}\\) 称为矩阵 \\(\mathbf{M}\\) 的奇异值分解，\\(\sigma\_{i}\\) 称为矩阵 \\(\mathbf{M}\\) 的奇异值，\\(\mathbf{U}\\) 的列向量称为左奇异向量，\\(\mathbf{V}\\) 的列向量称为右奇异向量。
@@ -99,7 +101,7 @@ $$
 设有 \\(m \times n\\) 实矩阵 \\(\mathbf{M}\\)，其秩为 \\(r\\)，则有紧奇异值分解为：
 
 $$
-\mathbf{M} = \mathbf{U}\_{r}\mathbf{Σ}\_{r}\mathbf{V}^{T}\_{r}
+\mathbf{M} = \mathbf{U}_{r}\mathbf{Σ}_{r}\mathbf{V}^{T}_{r}
 $$
 
 其中 \\(\mathbf{U}\_{r}\\) 是 \\(m \times r\\) 矩阵，\\(\mathbf{V}\_{r}\\) 是 \\(n \times r\\) 矩阵，\\(\mathbf{Σ}\_{r}\\) 是 \\(r\\) 阶对角矩阵。矩阵 \\(\mathbf{U}\_{r}\\) 由完全奇异值分解中 \\(\mathbf{U}\\) 的前 \\(r\\) 列构成，矩阵 \\(\mathbf{V}\_{r}\\) 由完全奇异值分解中 \\(\mathbf{V}\\) 的前 \\(r\\) 列构成，矩阵 \\(\mathbf{Σ}\_{r}\\) 由完全奇异值分解中 \\(\mathbf{Σ}\\) 的前 \\(r\\) 个对角线元素构成。
@@ -109,7 +111,7 @@ $$
 与“紧奇异值分解”类似，只不过这里只保留最大的 \\(k\\) 个奇异值（\\(k < r\\)）及其对应的奇异向量，有：
 
 $$
-\mathbf{M} \approx \mathbf{U}\_{k}\mathbf{Σ}\_{k}\mathbf{V}^{T}\_{k}
+\mathbf{M} \approx \mathbf{U}_{k}\mathbf{Σ}_{k}\mathbf{V}^{T}_{k}
 $$
 
 在实际应用中，常常需要对矩阵的数据进行压缩，将其近似表示，奇异值分解提供了一种方法。**奇异值分解是在平方损失（弗罗贝尼乌斯范数）意义下对矩阵的最优近似**。紧奇异值分解对应着无损压缩，截断奇异值分解对应着有损压缩。
@@ -117,9 +119,11 @@ $$
 因此，SVD 的原理告诉我们，**可以用低秩矩阵来近似地表达原矩阵**。
 
 > “弗罗贝尼乌斯范数”：
+>
 > $$
-> \lVert A \rVert\_{F} = \bigg( \sum\_{i = 1}^{m}\sum\_{j = 1}^{n} (a\_{ij})^{2} \bigg)^{\frac{1}{2}}, \mathbf{A} \in \mathbb{R}^{m \times n}
+> \lVert A \rVert_{F} = \bigg( \sum_{i = 1}^{m}\sum_{j = 1}^{n} (a_{ij})^{2} \bigg)^{\frac{1}{2}}, \mathbf{A} \in \mathbb{R}^{m \times n}
 > $$
+>
 > “奇异值分解在统计中的主要应用为主成分分析（PCA）。数据集的特征值（在 SVD 中用奇异值表征）按照重要性排列，降维的过程就是舍弃不重要的特征向量的过程，而剩下的特征向量张成空间为降维后的空间。”
 
 具体地，在 LoRA 中，将矩阵 \\(\mathbf{U}\\) 和 \\(\mathbf{Σ}\\) 合并为了一个矩阵 \\(\mathbf{B} \in \mathbb{R}^{m \times k}\\)，将矩阵 \\(\mathbf{V}^{T}\\) 表示为了矩阵 \\(\mathbf{A} \in \mathbb{R}^{k \times n}\\)，从而可以用更少的数据量来表示矩阵 \\(\mathbf{\Delta W}\\)。

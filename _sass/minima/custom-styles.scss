@@ -261,3 +261,101 @@ $dm-vars: (
     width: 100%;
   }
 }
+
+/**
+ * Post table of contents (right sidebar on wide screens)
+ */
+$toc-width: 220px;
+$toc-gap: 48px;
+$post-width: $content-width - $spacing-unit * 2;
+$post-layout-width: $post-width + $toc-gap + $toc-width;
+
+.post-toc {
+  display: none;
+}
+
+.post-content {
+  h2, h3 {
+    scroll-margin-top: 20px;
+  }
+}
+
+@media screen and (min-width: $post-layout-width + $spacing-unit * 3) {
+  // Center article + TOC as one block inside the narrower .wrapper.
+  .post-layout {
+    display: grid;
+    grid-template-columns: minmax(0, $post-width) $toc-width;
+    column-gap: $toc-gap;
+    width: $post-layout-width;
+    margin-left: calc(50% - #{$post-layout-width / 2});
+  }
+
+  // Widen the header to match, so the site title lines up with the post.
+  body:has(.post-toc:not([hidden])) .site-header .wrapper {
+    max-width: $post-layout-width;
+  }
+
+  .post-toc:not([hidden]) {
+    display: block;
+    align-self: start;
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    // Line up with the post title.
+    margin-top: 8px;
+  }
+}
+
+.post-toc {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    padding: 2px 0;
+    line-height: 1.4;
+    font-size: 13px;
+    font-weight: 500;
+    color: $brand-color;
+    text-decoration: none;
+    transition: color .15s;
+
+    &:hover {
+      color: $text-color;
+      text-decoration: none;
+    }
+
+    &.active {
+      color: $link-base-color;
+    }
+  }
+
+  .toc-h3 a {
+    padding: 2px 0 2px 12px;
+    font-size: 12px;
+    font-weight: 400;
+    border-left: 1px solid $border-color-01;
+
+    &.active {
+      border-left-color: $link-base-color;
+    }
+  }
+
+  // Space between h2 groups, like a TOC tree.
+  .toc-h2 + .toc-h2,
+  .toc-h3 + .toc-h2 {
+    margin-top: 6px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}

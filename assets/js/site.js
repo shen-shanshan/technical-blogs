@@ -41,6 +41,79 @@
   else if (media.addListener) media.addListener(onSystemChange);
 
   // ---------------------------------------------------------------------------
+  // Post table of contents with scroll spy
+  // ---------------------------------------------------------------------------
+
+  (function () {
+    var aside = document.querySelector('.post-toc');
+    var nav = document.getElementById('post-toc-nav');
+    var content = document.querySelector('.post-content');
+    if (!aside || !nav || !content) return;
+
+    var headings = Array.prototype.filter.call(content.querySelectorAll('h2, h3'), function (h) {
+      return h.textContent.trim();
+    });
+    if (headings.length < 2) return;
+
+    var ul = document.createElement('ul');
+    var links = headings.map(function (h, i) {
+      if (!h.id) h.id = 'section-' + (i + 1);
+      var li = document.createElement('li');
+      li.className = 'toc-' + h.tagName.toLowerCase();
+      var a = document.createElement('a');
+      a.href = '#' + encodeURIComponent(h.id);
+      a.textContent = h.textContent.trim();
+      li.appendChild(a);
+      ul.appendChild(li);
+      return a;
+    });
+    nav.appendChild(ul);
+    aside.hidden = false;
+
+    var current = -1;
+    // A heading becomes current once it scrolls above this line.
+    var OFFSET = 80;
+
+    function update() {
+      var idx = 0;
+      for (var i = 0; i < headings.length; i++) {
+        if (headings[i].getBoundingClientRect().top - OFFSET <= 0) idx = i;
+        else break;
+      }
+      // At the very bottom, short trailing sections can never reach the line.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        idx = headings.length - 1;
+      }
+      if (idx === current) return;
+      if (current >= 0) links[current].classList.remove('active');
+      current = idx;
+      var link = links[current];
+      link.classList.add('active');
+      // Keep the active entry visible when the TOC itself scrolls.
+      var top = link.offsetTop;
+      if (top < aside.scrollTop || top + link.offsetHeight > aside.scrollTop + aside.clientHeight) {
+        aside.scrollTop = top - aside.clientHeight / 2;
+      }
+    }
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        ticking = false;
+        update();
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    // Images loading above a heading shift its position.
+    window.addEventListener('load', update);
+    update();
+  })();
+
+  // ---------------------------------------------------------------------------
   // Search
   // ---------------------------------------------------------------------------
 

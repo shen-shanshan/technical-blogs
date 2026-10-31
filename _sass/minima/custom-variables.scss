@@ -1,0 +1,4 @@
+// Fonts follow vllm.ai/blog: Inter for text, JetBrains Mono for code.
+// CJK text falls back to the platform's Chinese UI fonts.
+$base-font-family: "Inter", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$mono-font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;

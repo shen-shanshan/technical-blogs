@@ -1,3 +1,16 @@
+<link rel="preload" href="{{ '/assets/fonts/inter-latin-wght-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+<script>
+    // Apply the stored light/dark choice before first paint to avoid a flash.
+    (function () {
+        var root = document.documentElement;
+        var stored = null;
+        try { stored = localStorage.getItem('theme'); } catch (e) {}
+        if (stored === 'light' || stored === 'dark') root.setAttribute('data-theme', stored);
+        var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.setAttribute('data-theme-active', dark ? 'dark' : 'light');
+    })();
+</script>
+<script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
 {% if page.math %}
 <script>
     MathJax = {
